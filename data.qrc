@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="dlgFrame">data/dlgFrame.png</file>
+        <file alias="background">data/background.png</file>
+        <file alias="logo">data/logo.png</file>
+        <file alias="btnWhiteMiddleHover">data/btnWhiteMiddleHover.png</file>
+        <file alias="btnWhiteMiddleNormal">data/btnWhiteMiddleNormal.png</file>
+        <file alias="btnWhiteMiddlePress">data/btnWhiteMiddlePress.png</file>
+        <file alias="clouse">data/clouse.png</file>
+        <file alias="clouse_hover">data/clouse_hover.png</file>
+        <file alias="clouse_press">data/clouse_press.png</file>
+        <file alias="minimize">data/minimize.png</file>
+        <file alias="minimize_hover">data/minimize_hover.png</file>
+        <file alias="minimize_press">data/minimize_press.png</file>
+        <file alias="progress">data/progress.png</file>
+        <file alias="progressBg">data/progressBg.png</file>
+        <file alias="btnInstallHover">data/btnInstallHover.png</file>
+        <file alias="btnInstallNormal">data/btnInstallNormal.png</file>
+        <file alias="btnInstallPress">data/btnInstallPress.png</file>
+        <file alias="btnStartHover">data/btnStartHover.png</file>
+        <file alias="btnStartNormal">data/btnStartNormal.png</file>
+        <file alias="btnStartPress">data/btnStartPress.png</file>
+        <file alias="gifInstalling">data/gifInstalling.gif</file>
+        <file alias="imgInstallTxt">data/imgInstallTxt.png</file>
+        <file alias="imgInstallFinish">data/imgInstallFinish.png</file>
+    </qresource>
+</RCC>
