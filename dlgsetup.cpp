@@ -49,8 +49,6 @@ DlgSetup::DlgSetup(QWidget *parent) :
 
     m_pPythonThread = NULL;
 
-    m_unZipPythonThread = NULL;
-
     m_nTimerUnzip = -1;
     m_nTimerProgress = -1;
     m_nCurProgress = 0;
@@ -104,7 +102,7 @@ void DlgSetup::startSetup()
         m_pPythonThread->StartOperate(PYTHON_TOOL_UNZIP, map);
         m_pPythonThread->start();
         m_pPythonThread->disconnect();
-        connect(m_pPythonThread, SIGNAL(finished()), this, SLOT(unZipPython()));
+        connect(m_pPythonThread, SIGNAL(finished()), this, SLOT(unZipFinish()));
     }
 
 }
@@ -323,27 +321,6 @@ void DlgSetup::copyDLL()
     //copy python27.zip
     QFile::copy(runPath + "/python27.zip", m_strTargetDir + "/python27.zip");
 
-    //copy dir(imageformats platforms sqldrivers)
-    QDir dirImages(runPath + "/imageformats");
-    QDir targetDirImg(m_strTargetDir + "/imageformats");
-    if(dirImages.exists())
-    {
-        copyDirectory(dirImages, targetDirImg);
-    }
-
-    QDir dirplatforms(runPath + "/platforms");
-    QDir targetDirplatforms(m_strTargetDir + "/platforms");
-    if(dirplatforms.exists())
-    {
-        copyDirectory(dirplatforms, targetDirplatforms);
-    }
-
-    QDir dirsqldrivers(runPath + "/sqldrivers");
-    QDir targetDirsqldrivers(m_strTargetDir + "/sqldrivers");
-    if(dirsqldrivers.exists())
-    {
-        copyDirectory(dirsqldrivers, targetDirsqldrivers);
-    }
 }
 
 void DlgSetup::produceUninstall()
@@ -351,48 +328,6 @@ void DlgSetup::produceUninstall()
     QString runPath = QCoreApplication::applicationDirPath();
     QString uninstallFile = runPath + "/uninstall.bat";
     QFile::copy(uninstallFile, m_strTargetDir + "/uninstall.bat");
-}
-
-bool DlgSetup::copyDirectory(const QDir &fromDir, const QDir &toDir, bool bCoverIfFileExists)
-{
-    QDir fromDir_ = fromDir;
-    QDir toDir_ = toDir;
-
-    if(!toDir_.exists())
-    {
-        if(!toDir_.mkdir(toDir.absolutePath()))
-            return false;
-    }
-
-    //foreach(QFileInfo fileInfo, fileInfoList)
-
-    QFileInfoList fileInfoList = fromDir_.entryInfoList();
-    foreach(QFileInfo fileInfo, fileInfoList)
-    {
-        if(fileInfo.fileName() == "." || fileInfo.fileName() == "..")
-            continue;
-        //(拷贝子目录)
-        if(fileInfo.isDir())
-        {
-            //(递归调用拷贝)
-            if(!copyDirectory(fileInfo.filePath(), toDir_.filePath(fileInfo.fileName())))
-                return false;
-        }
-        //(拷贝子文件)
-        else
-        {
-            if(bCoverIfFileExists && toDir_.exists(fileInfo.fileName()))
-            {
-                toDir_.remove(fileInfo.fileName());
-            }
-            if(!QFile::copy(fileInfo.filePath(), toDir_.filePath(fileInfo.fileName())))
-
-            {
-                return false;
-            }
-        }
-    }
-    return true;
 }
 
 void DlgSetup::on_btnSetup_clicked()
@@ -480,29 +415,6 @@ void DlgSetup::unZipFinish()
     produceNewMenu();
     produceUninstall();
     installFinish();
-}
-void DlgSetup::unZipPython()
-{
-    m_strTargetDir = ui->lineEditFile->text();
-    QString runPath = QCoreApplication::applicationDirPath();
-
-    QVariantMap map;
-    QString src = runPath + "/Python27-for-win32.zip";
-    map["src"] = src;
-    map["dest"] = m_strTargetDir + "/CocosPlay";
-    if(!m_unZipPythonThread)
-    {
-        m_unZipPythonThread = new PythonToolThread();
-    }
-    m_nSize = m_unZipPythonThread->getUnzipFileSize(src);
-    if(!m_unZipPythonThread->bExecTask())
-    {
-        m_unZipPythonThread->terminate();
-        m_unZipPythonThread->StartOperate(PYTHON_TOOL_UNZIP, map);
-        m_unZipPythonThread->start();
-        m_unZipPythonThread->disconnect();
-        connect(m_unZipPythonThread, SIGNAL(finished()), this, SLOT(unZipFinish()));
-    }
 }
 
 void DlgSetup::on_btnFinish_clicked()

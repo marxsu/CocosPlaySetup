@@ -40,8 +40,6 @@ protected:
     void copyDLL();
     void produceUninstall();
 
-    bool copyDirectory(const QDir &fromDir, const QDir &toDir, bool bCoverIfFileExists = true);
-
 private slots:
     void on_btnSetup_clicked();
 
@@ -55,16 +53,12 @@ private slots:
 
     void unZipFinish();
 
-    void unZipPython();
-
     void on_btnFinish_clicked();
 
 private:
     Ui::DlgSetup *ui;
 
     PythonToolThread* m_pPythonThread;
-
-    PythonToolThread* m_unZipPythonThread;
 
     int m_nTimerUnzip;
     int m_nTimerProgress;
