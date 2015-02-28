@@ -40,9 +40,9 @@ DlgSetup::DlgSetup(QWidget *parent) :
     foreach (QFileInfo file , lsFile)
     {
         QString driver = file.absolutePath();
-        if(driver == "D:/")
+        if(driver == "C:/")
         {
-            ui->lineEditFile->setText("D:/CocosPlay");
+            ui->lineEditFile->setText("C:\\Program Files");
             break;
         }
     }
@@ -71,6 +71,7 @@ void DlgSetup::startSetup()
 {
 
     m_strTargetDir = ui->lineEditFile->text();
+    m_strTargetDir.replace("\\","/");
     QString runPath = QCoreApplication::applicationDirPath();
 
 //    if(m_nTimerUnzip != -1)
@@ -188,6 +189,7 @@ void DlgSetup::produceShortCut()
 {
     QString runPath = QCoreApplication::applicationDirPath();
     m_strTargetDir = ui->lineEditFile->text();
+    m_strTargetDir.replace("\\","/");
     m_strTargetDir = m_strTargetDir + "/CocosPlay";
 
     QString workDir = m_strTargetDir + "/";
@@ -204,7 +206,7 @@ void DlgSetup::produceShortCut()
     idxStart = strContent.indexOf("lnkFile=");
     idxEnd = strContent.indexOf("'@@@", idxStart);
     if(idxStart != -1 && idxEnd != -1)
-        strContent.replace(idxStart + 8, idxEnd - idxStart -8, "\""+ runPath + "/CocosPlay.lnk\"");
+        strContent.replace(idxStart + 8, idxEnd - idxStart -8, "\""+ runPath + "/Cocos Play.lnk\"");
 
     file.resize(0);
     file.write(strContent.toLocal8Bit().data());
@@ -221,49 +223,50 @@ void DlgSetup::produceShortCut()
 
     if(bFinish)
     {
-        QString lnk = runPath + "/CocosPlay.lnk";
+        QString lnk = runPath + "/Cocos Play.lnk";
         QString destShortcut = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-        QFile::remove(destShortcut + "/CocosPlay.lnk");
-        QFile::copy(lnk, destShortcut + "/CocosPlay.lnk");
+        QFile::remove(destShortcut + "/Cocos Play.lnk");
+        QFile::copy(lnk, destShortcut + "/Cocos Play.lnk");
     }
 
 
 }
 
-void DlgSetup::setSysEnv()
-{
-    QString runPath = QCoreApplication::applicationDirPath();
-    QString str = ui->lineEditFile->text();
-    QString m_strTargetDir;
-    if('/' == str.at(str.size() - 1))
-    {
-       str.replace("/","");
-    }
-    m_strTargetDir = str + "/CocosPlay";
+//void DlgSetup::setSysEnv()
+//{
+//    QString runPath = QCoreApplication::applicationDirPath();
+//    QString str = ui->lineEditFile->text();
+//    str.replace("\\","/");
+//    QString m_strTargetDir;
+//    if('/' == str.at(str.size() - 1))
+//    {
+//       str.replace("/","");
+//    }
+//    m_strTargetDir = str + "/CocosPlay";
 
-    m_strTargetDir.replace("/","\\");
-    QString workDir = m_strTargetDir + "\\PythonSDK";
-    //modify vbs
-    QFile file(runPath + "/sysenv.vbs");
-    file.open(QIODevice::ReadWrite);
-    QByteArray aryContent = file.readAll();
-    QString strContent(aryContent);
-    int idxStart = strContent.indexOf("path=");
-    int idxEnd = strContent.indexOf("'###", idxStart);
-    if(idxStart != -1 && idxEnd != -1)
-        strContent.replace(idxStart + 5, idxEnd - idxStart -5, "\""+ workDir + "\"");
-    file.resize(0);
-    file.write(strContent.toLocal8Bit().data());
-    file.close();
+//    m_strTargetDir.replace("/","\\");
+//    QString workDir = m_strTargetDir + "\\PythonSDK";
+//    //modify vbs
+//    QFile file(runPath + "/sysenv.vbs");
+//    file.open(QIODevice::ReadWrite);
+//    QByteArray aryContent = file.readAll();
+//    QString strContent(aryContent);
+//    int idxStart = strContent.indexOf("path=");
+//    int idxEnd = strContent.indexOf("'###", idxStart);
+//    if(idxStart != -1 && idxEnd != -1)
+//        strContent.replace(idxStart + 5, idxEnd - idxStart -5, "\""+ workDir + "\"");
+//    file.resize(0);
+//    file.write(strContent.toLocal8Bit().data());
+//    file.close();
 
 
-    //produce shortcut
-    QString cmdShortCut = "cscript " + runPath + "/sysenv.vbs";
-    QProcess pro;
-    pro.start(cmdShortCut);
-    pro.waitForFinished();
+//    //produce shortcut
+//    QString cmdShortCut = "cscript " + runPath + "/sysenv.vbs";
+//    QProcess pro;
+//    pro.start(cmdShortCut);
+//    pro.waitForFinished();
 
-}
+//}
 
 void DlgSetup::installFinish()
 {
@@ -285,7 +288,7 @@ void DlgSetup::installFinish()
 void DlgSetup::produceNewMenu()
 {
     QString runPath = QCoreApplication::applicationDirPath();
-    QString lnk = runPath + "/CocosPlay.lnk";
+    QString lnk = runPath + "/Cocos Play.lnk";
     if(QFile::exists(lnk))
     {
         QString appShortcut = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation) + "/CocosPlay";
@@ -294,7 +297,7 @@ void DlgSetup::produceNewMenu()
         {
             appDir.mkpath(appShortcut);
         }
-        appShortcut = appShortcut + "/CocosPlay.lnk";
+        appShortcut = appShortcut + "/Cocos Play.lnk";
         if(QFile::exists(appShortcut))
         {
             QFile::remove(appShortcut);
@@ -335,6 +338,7 @@ void DlgSetup::on_btnSetup_clicked()
     QString txtPath = ui->lineEditFile->text();
     txtPath = txtPath.trimmed();
     ui->lineEditFile->setText(txtPath);
+    txtPath.replace("\\","/");
 //    if(txtPath.indexOf(" ") != -1)
 //    {
 //        ui->lineEditFile->setText("");
@@ -377,7 +381,6 @@ void DlgSetup::on_btnMinimize_clicked()
     QStringList lsStr = QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation);
     qDebug()<<lsStr;
 
-    return;
     this->showMinimized();
 }
 
@@ -386,6 +389,7 @@ void DlgSetup::on_btnbrowse_clicked()
     QString path = QFileDialog::getExistingDirectory(this, tr("Select setup directory."), ".");
     if(path.length())
     {
+        path.replace("/","\\");
         ui->lineEditFile->setText(path);
 
         QString style = "QLineEdit{border:1px solid rgb(217,217,217);color:rgb(0,0,0);background-color:rgb(255,255,255);}QLineEdit:hover{border:1px solid rgb(131,245,253);}";
@@ -410,7 +414,7 @@ void DlgSetup::unZipFinish()
     m_nCurProgress = 100;
 
     produceShortCut();
-    setSysEnv();
+//    setSysEnv();
     copyDLL();
     produceNewMenu();
     produceUninstall();

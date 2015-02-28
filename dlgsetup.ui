@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>CocosPlaySDK</string>
+   <string>Cocos Play</string>
   </property>
   <widget class="QPushButton" name="btnSetup">
    <property name="geometry">

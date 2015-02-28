@@ -33,7 +33,7 @@ protected:
 
     void produceShortCut();
 
-    void setSysEnv();
+//    void setSysEnv();
 
     void installFinish();
     void produceNewMenu();

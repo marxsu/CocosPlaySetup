@@ -32,6 +32,12 @@ FORMS    += dlgsetup.ui
 RESOURCES += \
     data.qrc
 
+
+RC_FILE += CocosPlaySetup.rc
+
+OTHER_FILES += \
+    CocosPlaySetup.rc
+
 win32:{
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
