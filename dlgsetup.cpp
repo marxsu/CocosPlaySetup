@@ -232,41 +232,41 @@ void DlgSetup::produceShortCut()
 
 }
 
-//void DlgSetup::setSysEnv()
-//{
-//    QString runPath = QCoreApplication::applicationDirPath();
-//    QString str = ui->lineEditFile->text();
-//    str.replace("\\","/");
-//    QString m_strTargetDir;
-//    if('/' == str.at(str.size() - 1))
-//    {
-//       str.replace("/","");
-//    }
-//    m_strTargetDir = str + "/CocosPlay";
+void DlgSetup::setSysEnv()
+{
+    QString runPath = QCoreApplication::applicationDirPath();
+    QString str = ui->lineEditFile->text();
+    str.replace("\\","/");
+    QString m_strTargetDir;
+    if('/' == str.at(str.size() - 1))
+    {
+       str.replace("/","");
+    }
+    m_strTargetDir = str + "/CocosPlay";
 
-//    m_strTargetDir.replace("/","\\");
-//    QString workDir = m_strTargetDir + "\\PythonSDK";
-//    //modify vbs
-//    QFile file(runPath + "/sysenv.vbs");
-//    file.open(QIODevice::ReadWrite);
-//    QByteArray aryContent = file.readAll();
-//    QString strContent(aryContent);
-//    int idxStart = strContent.indexOf("path=");
-//    int idxEnd = strContent.indexOf("'###", idxStart);
-//    if(idxStart != -1 && idxEnd != -1)
-//        strContent.replace(idxStart + 5, idxEnd - idxStart -5, "\""+ workDir + "\"");
-//    file.resize(0);
-//    file.write(strContent.toLocal8Bit().data());
-//    file.close();
+    m_strTargetDir.replace("/","\\");
+    QString workDir = m_strTargetDir + "\\PythonSDK";
+    //modify vbs
+    QFile file(runPath + "/sysenv.vbs");
+    file.open(QIODevice::ReadWrite);
+    QByteArray aryContent = file.readAll();
+    QString strContent(aryContent);
+    int idxStart = strContent.indexOf("path=");
+    int idxEnd = strContent.indexOf("'###", idxStart);
+    if(idxStart != -1 && idxEnd != -1)
+        strContent.replace(idxStart + 5, idxEnd - idxStart -5, "\""+ workDir + "\"");
+    file.resize(0);
+    file.write(strContent.toLocal8Bit().data());
+    file.close();
 
 
-//    //produce shortcut
-//    QString cmdShortCut = "cscript " + runPath + "/sysenv.vbs";
-//    QProcess pro;
-//    pro.start(cmdShortCut);
-//    pro.waitForFinished();
+    //produce shortcut
+    QString cmdShortCut = "cscript " + runPath + "/sysenv.vbs";
+    QProcess pro;
+    pro.start(cmdShortCut);
+    pro.waitForFinished();
 
-//}
+}
 
 void DlgSetup::installFinish()
 {
@@ -414,7 +414,7 @@ void DlgSetup::unZipFinish()
     m_nCurProgress = 100;
 
     produceShortCut();
-//    setSysEnv();
+    setSysEnv();
     copyDLL();
     produceNewMenu();
     produceUninstall();
