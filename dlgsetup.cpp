@@ -9,6 +9,7 @@
 #include "QMovie"
 #include "QTextCodec"
 #include "noticetip.h"
+#include <QRegExp>
 
 #define PROGRAME_EXE "/CocosPlay.exe"
 
@@ -386,7 +387,18 @@ void DlgSetup::on_btnMinimize_clicked()
 
 void DlgSetup::on_btnbrowse_clicked()
 {
-    QString path = QFileDialog::getExistingDirectory(this, tr("Select setup directory."), ".");
+    QString dest = ui->lineEditFile->text();
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select setup directory."),dest );
+    QRegExp rx("[\u4e00-\u9fa5]");
+    bool match = path.contains(rx);
+    if(match)
+    {
+        NoticeTip* tip = new NoticeTip(this);
+        tip->setAttribute(Qt::WA_DeleteOnClose);
+        tip->setNoticeText(QTextCodec::codecForName("GBK")->toUnicode("安装路径包含有中文"));
+        tip->exec();
+        return;
+    }
     if(path.length())
     {
         path.replace("/","\\");

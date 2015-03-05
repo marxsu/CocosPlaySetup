@@ -56,6 +56,7 @@ private slots:
     void on_btnFinish_clicked();
 
 private:
+
     Ui::DlgSetup *ui;
 
     PythonToolThread* m_pPythonThread;
